@@ -4,7 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GATE ECE Preparation Tracker</title>
+
+<!-- Tailwind CSS -->
 <script src="https://cdn.tailwindcss.com"></script>
+
+<!-- Google Analytics -->
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-H4WKBLTVE4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-H4WKBLTVE4');
+</script>
+
 </head>
 <body class="bg-gray-100 p-6 font-sans">
 <h1 class="text-3xl font-bold text-center mb-6">📊 GATE ECE Preparation Tracker</h1>
@@ -23,7 +36,7 @@
   <div class="w-full bg-gray-200 rounded-full h-4 mb-2">
     <div id="bar-sec1" class="bg-blue-500 h-4 rounded-full" style="width:0%"></div>
   </div>
-
+  
   <!-- Section 1 Topics -->
   <details class="mb-2"><summary class="cursor-pointer font-medium">Network Analysis (4.8%)</summary>
     <ul class="ml-4 list-disc">
@@ -33,7 +46,7 @@
       <li><input type="checkbox" class="sec1-topic" data-weight="1.2"> Two Port Networks (1.2%)</li>
     </ul>
   </details>
-
+  
   <details class="mb-2"><summary class="cursor-pointer font-medium">Signals & Systems (6%)</summary>
     <ul class="ml-4 list-disc">
       <li><input type="checkbox" class="sec1-topic" data-weight="1.5"> Basics of Signals & Systems (1.5%)</li>
@@ -182,8 +195,17 @@
 function updateProgress(section) {
   let total = 0;
   let checkboxes = document.querySelectorAll(`.${section}-topic`);
-  checkboxes.forEach(cb => {
+  checkboxes.forEach((cb, index) => {
     if(cb.checked) total += parseFloat(cb.dataset.weight);
+
+    // Track checkbox clicks in Google Analytics
+    cb.addEventListener('change', () => {
+      gtag('event', 'checkbox_click', {
+        'event_category': section,
+        'event_label': cb.parentElement.innerText.trim(),
+        'value': cb.checked ? 1 : 0
+      });
+    });
   });
   document.getElementById(`sec${section.charAt(3)}-progress`).innerText = total + '%';
   document.getElementById(`bar-sec${section.charAt(3)}`).style.width = total + '%';
@@ -212,3 +234,4 @@ function updateTotal() {
 </script>
 </body>
 </html>
+
